@@ -1,0 +1,36 @@
+/* Style for the entire app container */
+.app-container {
+    font-family: Arial, sans-serif;
+    padding: 20px;
+  }
+  
+  /* Basic styling for the navbar */
+  .navbar {
+    background-color: #333;
+    padding: 10px;
+    margin-bottom: 20px;
+  }
+  
+  .navbar ul {
+    list-style-type: none;
+    padding: 0;
+  }
+  
+  .navbar ul li {
+    display: inline;
+    margin-right: 20px;
+  }
+  
+  .navbar ul li a {
+    color: white;
+    text-decoration: none;
+    font-size: 16px;
+  }
+  
+  .navbar ul li a.active {
+    font-weight: bold;
+    text-decoration: underline;
+  }
+  
+  /* Add other global styles for the app */
+  

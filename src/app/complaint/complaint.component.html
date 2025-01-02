@@ -1,0 +1,38 @@
+
+<div>
+    <div *ngIf="message">
+        <p>{{ message }}</p>
+      </div>
+      <div *ngIf="complaints.length > 0">
+        <h3>Complaints</h3>
+        <table class="table">
+          <thead>
+            <tr>
+              <th>Complaint No</th>
+              <th>ZID</th>
+              <th>Phase No</th>
+              <th>Floor No</th>
+              <th>Room No</th>
+              <th>Description</th>
+            </tr>
+          </thead>
+          <tbody>
+            <!-- Loop through each complaint and display its details -->
+            <tr *ngFor="let complaint of pagedComplaints">
+              <td>{{ complaint.compId }}</td>
+              <td>{{ complaint.zid }}</td>
+              <td>{{ complaint.phaseNo }}</td>
+              <td>{{ complaint.floorNo }}</td>
+              <td>{{ complaint.roomNo }}</td>
+              <td>{{ complaint.description }}</td>
+              <td><button (click)="resolveIssue(complaint.compId)">Resolve</button></td>
+            </tr>
+          </tbody>
+        </table>
+        <div class="pagination">
+          <button (click)="setPage(currentPage - 1)" [disabled]="currentPage === 1">Previous</button>
+          <span>Page {{ currentPage }} of {{ totalPages }}</span>
+          <button (click)="setPage(currentPage + 1)" [disabled]="currentPage === totalPages">Next</button>
+        </div>
+      </div>
+</div>

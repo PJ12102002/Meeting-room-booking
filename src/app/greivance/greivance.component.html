@@ -1,0 +1,38 @@
+<div class="container">
+    <h1>Choose Location</h1>
+    <!-- Phase and Floor Dropdowns -->
+    <div class="dropdowns" *ngIf="flag">
+      <label for="phase">Select Phase:</label>
+      <select id="phase" (change)="onPhaseChange($event)">
+        <option value="">--Select Phase--</option>
+        <option *ngFor="let phase of phases" [value]="phase.id">{{ phase.name }}</option>
+      </select>
+   
+      <label for="floor">Select Floor:</label>
+      <select id="floor" (change)="onFloorChange($event)" [disabled]="!selectedPhase">
+        <option value="">--Select Floor--</option>
+        <option *ngFor="let floor of floors" [value]="floor.id">{{ floor.name }}</option>
+      </select>
+   
+   
+    <!-- Button to fetch available rooms -->
+    <button (click)="fetchAvailableRooms()">Available Rooms</button>
+  </div>
+    <!-- Message Display -->
+    <div *ngIf="message">
+      <p>{{ message }}</p>
+    </div>
+    <div *ngIf="meetingRooms.length >0 && flag==0">
+      <label for="room">Select Room:</label>
+      <select id="room"  [(ngModel)]="room">
+        <option value="">--Select Room--</option>
+        <option *ngFor="let meetRoom of meetingRooms" [value]="meetRoom.roomNo">{{ meetRoom.roomNo }}</option>
+      </select>
+      <label for="feedback">Feedback :</label>
+      <input id="feedback" type="text" [(ngModel)]="feedback"/>
+      <button (click)="feedbacksubmit()">Submit FeedBack</button>
+  <div *ngIf="mes">
+    <p>{{ mes }}</p>
+  </div>
+</div>
+  </div>

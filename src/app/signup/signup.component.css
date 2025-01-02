@@ -1,0 +1,95 @@
+/* Common styles for both login and signup */
+.main-container {
+  display: flex;
+  flex-direction: row;
+  height: 90vh;
+  align-items: center; /* Vertically center the children */
+}
+
+.signup-details {
+  background-color: rgb(255, 255, 255);
+  width: 50vw;
+  flex: 1;
+  margin-right: 20px; /* Optional: adds some space between the form and image */
+  display: flex;
+  justify-content: center;
+  align-items: center; /* Vertically center the content inside the signup-details */
+}
+
+.image-container {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-image: url('C:/Users/z046376/OneDrive - Alliance/Request-meeting/public/images/Rectangle.jpg');
+  background-position: center;
+  background-repeat: no-repeat;
+  height: 90vh;
+  margin-right: 20px; 
+  margin-top: 30px;
+}
+
+.image-top {
+  margin-right: -50px;
+  padding-left: 50px;
+}
+
+.image-bottom {
+  margin-left: -40px;
+  padding-right: 30px;
+}
+
+/* Styles for the signup form */
+.signup-container {
+  width: 300px;
+  padding: 20px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+
+form {
+  display: flex;
+  flex-direction: column;
+}
+
+label {
+  margin-bottom: 5px;
+}
+
+input {
+  margin-bottom: 10px;
+  padding: 8px;
+  font-size: 16px;
+}
+
+button {
+  padding: 10px;
+  background-color: #28a745; /* Green color remains unchanged */
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+button:hover {
+  background-color: #218838;
+}
+
+.signup-heading {
+  text-align: center;
+  font-size: xx-large;
+}
+
+.signup {
+  text-align: center;
+  width: 20vw;
+}
+
+.form-control {
+  width: 90%;
+}
+
+.validation-error {
+  color: red;
+  font-size: small;
+}

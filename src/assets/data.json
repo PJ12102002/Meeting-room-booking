@@ -1,0 +1,67 @@
+{
+    "phases": [
+        {
+          "id": 1,
+          "name": "Phase 1",
+          "floors": [
+            {
+              "id": 1,
+              "name": "Floor 1"
+            },
+            {
+              "id": 2,
+              "name": "Floor 2"
+            },
+            {
+              "id": 3,
+              "name": "Floor 3"
+            }
+          ]
+        },
+        {
+          "id": 2,
+          "name": "Phase 2",
+          "floors": [
+            {
+              "id": 1,
+              "name": "Floor 1"
+             
+            },
+            {
+              "id": 2,
+              "name": "Floor 2"
+            },
+            {
+              "id": 3,
+              "name": "Floor 3"
+            },
+            {
+              "id": 4,
+              "name": "Floor 4"
+           
+            }
+          ]
+        },
+        {
+          "id": 3,
+          "name": "Phase 3",
+          "floors": [
+            {
+              "id": 1,
+              "name": "Floor 1"
+             
+            },
+            {
+              "id": 2,
+              "name": "Floor 2"
+             
+            },
+            {
+              "id": 3,
+              "name": "Floor 3"
+             
+            }
+          ]
+        }
+      ]
+    }

@@ -1,0 +1,160 @@
+
+.top-layout {
+  background-color: #D9D9D9;
+  height: 13vh;
+  display: flex;
+  justify-content: space-between; /* Space out the elements horizontally */
+  align-items: center; /* Align vertically */
+  padding: 10px; /* Adjust padding as needed */
+}
+
+
+.fullname {
+  display: flex;
+  align-items: center; /* Aligns the items vertically in the center */
+  gap: 4  px; /* Adds space between the icon and the name */
+  font-size:x-large;
+  font-weight: bolder;
+  margin-right: 42px;
+}
+
+
+.active-link {
+  background-color: #34495e; /* Background color when active */
+  padding-left: 12px;
+  font-weight: bold; /* Bold text */
+  color: white;
+}
+
+.person-icon {
+  color: black !important;
+  font-family: 'Material Icons', sans-serif;  /* Ensure the font is correctly set */
+}
+
+
+
+.content-layout {
+  
+  display: flex;
+  flex-direction: row;
+  flex-grow: 1;
+  height: 78vh;
+}
+
+.side-layout {
+  background-color: black;
+  width: 15vw;
+}
+
+.nav-list li {
+  margin: 25px 15px;
+}
+
+.nav-list a:hover {
+  background-color: #34495e;
+  padding-left: 12px;
+  cursor: pointer;
+  
+}
+
+.main-content
+{
+  background-color: aqua;
+  width: 100%;
+  margin-left: 3px;
+}
+
+.nav-list a {
+  color: white;
+  text-decoration: none;
+  font-size: 18px;
+  display: flex;
+  align-items: center;
+}
+
+.nav-list {
+  list-style: none;
+  padding: 10px;
+}
+
+.heading {
+  color: white;
+  margin-left: 10px;
+}
+
+/* Position the logout button to the right */
+.Logout-button {
+  position: absolute; /* Absolute positioning */
+  top: 75px; /* Distance from the top */
+  right: 40px; /* Align to the right */
+  width: 7.4vw;
+  height: 3vh;
+  border-radius: 10px;
+  font-weight: bolder;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 16px;
+  z-index: 10; /* Ensure it stays above other content */
+}
+
+.active-link {
+  background-color: #34495e; /* Background color when active */
+  padding-left: 12px;
+  font-weight: bold; /* Bold text */
+  color: white;
+}
+
+
+
+.Logout-button .button-text {
+  margin-left: 8px;
+}
+
+/* Responsive styles for smaller screens */
+@media (max-width: 768px) {
+  .Logout-button {
+      width: 30vw; /* Adjust width for smaller screens */
+      height: 6vh; /* Adjust height for smaller screens */
+      top: 20px; /* Adjust position for small screens */
+      right: 20px; /* Adjust position for small screens */
+  }
+}
+
+@media (max-width: 480px) {
+  .Logout-button {
+      width: 40vw; /* Adjust width further for very small screens */
+      height: 8vh; /* Adjust height further for very small screens */
+      top: 15px; /* Further adjust position for small screens */
+      right: 10px; /* Further adjust position for small screens */
+  }
+}
+
+.mat-divider {
+  margin-bottom: 10px; /* Adjust the space after the divider */
+}
+
+.material-icons {
+  color: white;
+  font-size: 24px;
+  padding: 5px;
+}
+
+.account
+{
+  color: black;
+}
+
+
+.material-icon {
+  color: rgb(0, 0, 0);
+  font-size: 24px;
+  padding: 5px;
+}
+
+.top-layout img {
+  padding: 7px;
+  width: 9%;
+  height: 110%;
+  margin-left: 25px;
+}

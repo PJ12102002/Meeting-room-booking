@@ -1,0 +1,78 @@
+<div class="top-layout">
+    <img src="./images/Prem.png" alt="No image">
+    <p class="fullname">
+        <span class="material-icons person-icon">person</span>
+        {{ fullName }}
+    </p>
+</div>
+
+<div class="content-layout">
+    <aside class="side-layout">
+        <h3 class="heading">Menu</h3>
+        <mat-divider style="border: 1px solid white; margin-right: 30px;"></mat-divider>
+        <ul class="nav-list">
+            <li>
+                <a 
+                    (click)="showContent('home')" 
+                    [ngClass]="{'active-link': selectedContent === 'home'}">
+                    <span class="material-icons">home</span> Home
+                </a>
+            </li>
+            <li>
+                <a 
+                    (click)="showContent('add-room')" 
+                    [ngClass]="{'active-link': selectedContent === 'add-room'}">
+                    <span class="material-icons">add_circle</span> Add Room
+                </a>
+            </li>
+            <li>
+                <a 
+                    (click)="showContent('cancel-room')" 
+                    [ngClass]="{'active-link': selectedContent === 'cancel-room'}">
+                    <span class="material-icons">cancel</span> Cancel Room
+                </a>
+            </li>
+        </ul>
+
+        <h3 class="heading">Others</h3>
+        <mat-divider style="border: 1px solid white; margin-right: 30px;"></mat-divider>
+        <ul class="nav-list">
+            <li>
+                <a 
+                    (click)="showContent('account')" 
+                    [ngClass]="{'active-link': selectedContent === 'account'}">
+                    <span class="material-icons">manage_accounts</span> Account
+                </a>
+            </li>
+            <li>
+                <a 
+                    (click)="showContent('help')" 
+                    [ngClass]="{'active-link': selectedContent === 'help'}">
+                    <span class="material-icons">help</span> Help
+                </a>
+            </li>
+            <li>
+                <a 
+                    (click)="showContent('feedback')" 
+                    [ngClass]="{'active-link': selectedContent === 'feedback'}">
+                    <span class="material-icons">forum</span>Greivance
+                </a>
+            </li>
+        </ul>
+        
+        <p class="Logout-button">
+            <button (click)="goToLogin()">Logout</button>
+        </p>
+    </aside>
+
+    <div class="main-content">
+        <!-- Conditionally display components based on selected menu item -->
+        <app-facilities *ngIf="selectedContent === 'home'"></app-facilities>
+        <app-userprofile *ngIf="selectedContent === 'account'"></app-userprofile>
+        <app-chatbot *ngIf="selectedContent === 'help'"></app-chatbot>
+        <app-greivance *ngIf="selectedContent === 'feedback'"></app-greivance>
+        <!-- Add more components like Add Room, Help, Feedback, etc. -->
+    </div>
+</div>
+
+<div class="bottom-layout"></div>

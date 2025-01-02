@@ -1,0 +1,159 @@
+/* Main Container */
+.main-container {
+  position: relative;
+ 
+}
+
+/* Login Button */
+.login-button {
+  position: absolute; /* Positions the button relative to the parent (slider-container) */
+  top: 50%; /* Moves the button vertically to the center */
+  left: 50%; /* Moves the button horizontally to the center */
+  transform: translate(-50%, -50%); /* Adjusts for the button's size to truly center it */
+  padding: 10px 20px;
+  background-color: #007BFF; /* Blue button color */
+  color: white;
+  border: none;
+  cursor: pointer;
+  font-size: 16px;
+}
+
+.login-button:hover {
+  background-color: #0056b3;
+}
+
+/* Modal overlay (blurs the background) */
+.login-dialog-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5); /* Semi-transparent background */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000; /* Ensure the dialog is above everything else */
+  backdrop-filter: blur(5px); /* Blur the background */
+}
+
+/* Modal Dialog */
+.login-dialog {
+  background-color: #fff;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  text-align: center;
+}
+
+.login-dialog h3 {
+  margin-bottom: 20px;
+}
+
+.login-dialog button {
+  margin: 10px;
+  padding: 10px 20px;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.login-dialog button:hover {
+  background-color: #0056b3;
+}
+
+.slider-container {
+  overflow: hidden;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  position: relative;
+}
+
+.slider {
+  display: flex;
+  transition: transform 0.5s ease-in-out;
+}
+
+.slider img {
+  width: 100%;
+  height: 630px; /* Auto scale height based on the width */
+  flex-shrink: 0;
+  object-fit: cover; /* Makes sure the image fits within the container */
+}
+
+.request-text {
+  position: absolute; /* Absolute positioning to place it on top of the login button */
+  top: 35%; /* Adjusts where the "Request Meeting Room" text appears vertically */
+  left: 50%; /* Horizontally centers the text */
+  transform: translateX(-50%); /* Ensures the text is centered */
+  font-size: 30px; /* Adjust text size as needed */
+  color: rgb(0, 0, 0); /* Optional: change to a contrasting color for visibility */
+  font-weight:bolder; /* Optional: bold the text */
+}
+
+
+.scroll-button {
+  background-color: transparent;
+  color: rgb(112, 112, 112); /* Initial text color */
+  border: none;
+  padding: 10px;
+  cursor: pointer;
+  font-size: 36px;
+  position: absolute;
+  top: 50%;
+  z-index: 10;
+  border-radius: 50%; /* Circular shape */
+  /* transition: background-color 0.3s, transform 0.3s, color 0.3s;  */
+}
+
+.scroll-button:hover {
+  background-color: rgba(0, 0, 0, 0.8); /* Background color change */
+  color: white; /* Text color change on hover */
+  transform: scale(1.1); /* Slightly enlarges on hover */
+}
+
+.scroll-button:first-of-type{
+  left: 10px;
+  transform: translateY(-50%);
+}
+
+.scroll-button:last-of-type
+{
+  right: 10px;
+  transform: translateY(-50%);
+}
+
+.bottom-half {
+  display: flex;
+  justify-content: space-between;
+  padding: 20px;
+}
+
+.left-section, .right-section {
+  width: 48%;
+}
+
+.schedule-table {
+  width: 80%;
+  border-collapse: collapse;
+  border: 1px solid black;
+}
+
+.schedule-table th, .schedule-table td {
+  border: 1px solid black; /* Borders around each table cell */
+  padding: 8px; /* Adds space inside the cells */
+  text-align: left; /* Aligns the text to the left */
+}
+
+.social-icons a {
+  margin-right: 10px;
+}
+
+.social-icons img {
+  width: 30px;
+  height: 30px;
+}

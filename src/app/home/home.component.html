@@ -1,0 +1,75 @@
+<div class="main-container">
+
+  <!-- Top Section -->
+  <div class="top-container">
+
+    <!-- Slider Container with Buttons -->
+    <div class="slider-container">
+      <button class="scroll-button" (click)="scrollLeft()">‹</button>
+      <div class="slider">
+        <img *ngFor="let image of images" [src]="image" />
+      </div>
+      <button class="scroll-button" (click)="scrollRight()">›</button>
+    </div>
+
+    <!-- Request Meeting Room Text -->
+    <h3 class="request-text">Request Meeting Room</h3>
+
+    <!-- Login Button -->
+    <button class="login-button" (click)="openLoginDialog()">Login</button>
+
+  </div>
+
+  <!-- Modal for Login Dialog -->
+  <div *ngIf="showLoginDialog" class="login-dialog-overlay">
+    <div class="login-dialog">
+      <h3>Select Login Type</h3>
+      <button (click)="loginAsEmployee()">Employee Login</button>
+      <button (click)="loginAsAdmin()">Admin Login</button>
+      <button (click)="closeLoginDialog()">Cancel</button>
+    </div>
+  </div>
+
+</div>
+
+<!-- Bottom Section -->
+<div class="bottom-half">
+
+  <!-- Left Section: Schedule -->
+  <div class="left-section">
+    <h3>Meeting Schedule</h3>
+    <table class="schedule-table">
+      <thead>
+        <tr>
+          <th>Day</th>
+          <th>Hours</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr><td>Monday</td><td>9:00 AM - 5:00 PM</td></tr>
+        <tr><td>Tuesday</td><td>9:00 AM - 5:00 PM</td></tr>
+        <tr><td>Wednesday</td><td>9:00 AM - 5:00 PM</td></tr>
+        <tr><td>Thursday</td><td>9:00 AM - 5:00 PM</td></tr>
+        <tr><td>Friday</td><td>9:00 AM - 5:00 PM</td></tr>
+        <tr><td>Saturday</td><td>Closed</td></tr>
+        <tr><td>Sunday</td><td>Closed</td></tr>
+      </tbody>
+    </table>
+    <p>Book your meeting room today for your next productive session!</p>
+  </div>
+
+  <!-- Right Section: Contact Details -->
+  <div class="right-section">
+    <h3>Contact Us</h3>
+    <p>Phone: +1 234 567 890</p>
+    <p>Email: contactgmail.com</p>
+    <p>Location: 123 Meeting St, City</p>
+    <div class="social-icons">
+      <a href="#"><img src="./images/facebook.png" alt="Facebook"></a>
+      <a href="#"><img src="./images/google.png" alt="Google"></a>
+      <a href="#"><img src="./images/linkedin.png" alt="LinkedIn"></a>
+      <a href="#"><img src="./images/share.png" alt="Share"></a>
+    </div>
+  </div>
+
+</div>

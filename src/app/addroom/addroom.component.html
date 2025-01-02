@@ -1,0 +1,37 @@
+<div class="container">
+    <h1>Add New Meeting Room</h1>
+   
+    <form (ngSubmit)="addRoom()">
+      <div class="division">
+        <div>
+          <label for="roomNo">Room No:</label>
+          <input id="roomNo" [(ngModel)]="room.roomNo" name="roomNo" required>
+        </div>
+        <div>
+          <label for="roomName">Room Name:</label>
+          <input id="roomName" [(ngModel)]="room.roomName" name="roomName" required>
+        </div>
+        <div>
+          <label for="roomCapacity">Room Capacity:</label>
+          <input id="roomCapacity" type="number" [(ngModel)]="room.roomCapacity" name="roomCapacity" required>
+        </div>
+        <div>
+          <label for="access">Access:</label>
+          <input id="access" [(ngModel)]="room.access" name="access" required>
+        </div>
+        <div>
+          <label for="phaseNo">Phase No:</label>
+          <input id="phaseNo" type="number" [(ngModel)]="room.phaseNo" name="phaseNo" required>
+        </div>
+        <div>
+          <label for="floorNo">Floor No:</label>
+          <input id="floorNo" type="number" [(ngModel)]="room.floorNo" name="floorNo" required>
+        </div>
+      </div>
+      <button type="submit">Add Room</button>
+    </form>
+    <div *ngIf="message">
+      <p>{{ message }}</p>
+    </div>
+  </div>
+   

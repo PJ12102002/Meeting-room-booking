@@ -1,0 +1,68 @@
+<div class="main-container">
+  <aside class="login-details">
+    <div class="login-container">
+      <h2 class="login-heading">Login</h2>
+  
+      <!-- Form for Login -->
+      <form (ngSubmit)="login()" #loginForm="ngForm">
+        
+        <!-- Username Field -->
+        <div class="form-group">
+          <label for="username">Username</label>
+          <br />
+          <input
+            type="text"
+            id="username"
+            [(ngModel)]="username"
+            name="username"
+            required
+            minlength="3"
+            #usernameField="ngModel"
+            class="form-control"
+          />
+          <!-- Validation Message for Username -->
+          <div *ngIf="usernameField.touched && usernameField.invalid" class="validation-error">
+            <small *ngIf="usernameField.errors?.['required']">Username is required.</small>
+            <small *ngIf="usernameField.errors?.['minlength']">Username must be at least 3 characters.</small>
+          </div>
+        </div>
+    
+        <!-- Password Field -->
+        <div class="form-group">
+          <label for="password">Password</label>
+          <br/>
+          <input
+            type="password"
+            id="password"
+            [(ngModel)]="password"
+            name="password"
+            required
+            minlength="6"
+            #passwordField="ngModel"
+            class="form-control"
+          />
+          <!-- Validation Message for Password -->
+          <div *ngIf="passwordField.touched && passwordField.invalid" class="validation-error">
+            <small *ngIf="passwordField.errors?.['required']">Password is required.</small>
+            <small *ngIf="passwordField.errors?.['minlength']">Password must be at least 6 characters.</small>
+          </div>
+        </div>
+    
+        <!-- Submit Button -->
+        <button type="submit" class="btn btn-primary" [disabled]="loginForm.invalid " style="width: 200px; margin-left: 47px;">Login</button>
+      </form>
+    
+      <!-- Sign-up Link -->
+      <p class="signup-button">New user?<button (click)="goToSignup()">Sign up</button></p>
+    </div>
+  </aside>
+  
+  <div class="image-container">
+
+    <img src="./images/main.png" alt="First Image" class="image-top" />
+  
+    <!-- Second Image (Top Image) -->
+    <img src="./images/Prem.png" alt="Second Image" class="image-bottom" />
+   
+  </div>
+</div>
