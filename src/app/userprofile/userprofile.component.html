@@ -30,7 +30,7 @@
       <input type="text" id="role" [(ngModel)]="employee.role" name="role">
 
       <label for="path">Path:</label>
-      <input type="text" id="path" [(ngModel)]="employee.path" name="path">
+      <input type="file" id="path" (change)="onFileSelected($event)" name="path">
 
       <button type="submit">Save</button>
       <button type="button" (click)="toggleEdit()">Cancel</button>

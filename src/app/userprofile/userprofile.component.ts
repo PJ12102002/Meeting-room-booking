@@ -18,6 +18,7 @@ export class UserprofileComponent {
   employee: Employee | null = null;  // Store the user profile
   errorMessage: string = '';  // Error message if any
   isEditing: boolean = false;  // Flag to toggle between view and edit mode
+  selectedFile: File | null = null; // Store the selected file
 
   constructor(private profileService: ProfileService, private router: Router) {}
 
@@ -39,22 +40,47 @@ export class UserprofileComponent {
     this.isEditing = !this.isEditing;
   }
 
+  // Handle file selection
+  onFileSelected(event: any) { 
+    const file: File = event.target.files[0]; 
+    const allowedTypes = ['image/jpeg', 'image/jpg', 'image/png']; 
+    if (file && allowedTypes.includes(file.type)) { 
+      this.selectedFile = file; 
+      this.errorMessage = ''; 
+    } 
+    else {
+       this.selectedFile = null; 
+       this.errorMessage = 'Invalid file type. Only JPEG, JPG, and PNG files are allowed.'; 
+       event.target.value = ''; // Clear the input to reset file selection
+      } 
+    }
+
   // Save the updated profile data
   saveProfile() {
     if (this.employee) {
-      // Send the updated profile data to the backend
-      this.profileService.updateProfile(this.employee).subscribe(
-        (response) => {
-          console.log('Profile updated successfully:', response);
-          this.isEditing = false;  // Switch to view mode after saving
-        },
-        (error) => {
-          console.error('Error updating profile:', error);
-          this.errorMessage = error.error ? error.error : 'An error occurred while updating the profile.';
-        }
-      );
+        this.profileService.uploadFile(this.selectedFile).subscribe(
+            (response) => {
+                if (this.employee) {
+                    this.employee.path = response.filePath;  // Set the file path from the response
+                    this.profileService.updateProfile(this.employee).subscribe(
+                        (response) => {
+                            console.log('Profile updated successfully:', response);
+                            this.isEditing = false;  // Switch to view mode after saving
+                        },
+                        (error) => {
+                            console.error('Error updating profile:', error);
+                            this.errorMessage = error.error ? error.error : 'An error occurred while updating the profile.';
+                        }
+                    );
+                }
+            },
+            (error) => {
+                console.error('Error uploading file:', error);
+                this.errorMessage = error.error ? error.error : 'An error occurred while uploading the file.';
+            }
+        );
     }
-  }
+}
 
   // Navigate to another page (if needed)
   goBack() {
