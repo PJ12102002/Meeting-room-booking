@@ -1,0 +1,16 @@
+meta {
+  name: login
+  type: http
+  seq: 2
+}
+
+post {
+  url: http://localhost:8080/admin/login?zid=z012345&password=yami@123
+  body: none
+  auth: none
+}
+
+params:query {
+  zid: z012345
+  password: yami@123
+}

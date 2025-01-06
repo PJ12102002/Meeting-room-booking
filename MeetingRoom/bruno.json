@@ -1,0 +1,9 @@
+{
+  "version": "1",
+  "name": "MeetingRoom",
+  "type": "collection",
+  "ignore": [
+    "node_modules",
+    ".git"
+  ]
+}
