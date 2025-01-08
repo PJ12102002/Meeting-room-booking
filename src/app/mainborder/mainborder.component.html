@@ -22,14 +22,14 @@
                 <a 
                     (click)="showContent('add-room')" 
                     [ngClass]="{'active-link': selectedContent === 'add-room'}">
-                    <span class="material-icons">add_circle</span> Add Room
+                    <span class="material-icons">add_circle</span> Book Room
                 </a>
             </li>
             <li>
                 <a 
-                    (click)="showContent('cancel-room')" 
-                    [ngClass]="{'active-link': selectedContent === 'cancel-room'}">
-                    <span class="material-icons">cancel</span> Cancel Room
+                    (click)="showContent('history')" 
+                    [ngClass]="{'active-link': selectedContent === 'history'}">
+                    <span class="material-icons">history</span> History
                 </a>
             </li>
         </ul>
@@ -55,7 +55,7 @@
                 <a 
                     (click)="showContent('feedback')" 
                     [ngClass]="{'active-link': selectedContent === 'feedback'}">
-                    <span class="material-icons">forum</span>Greivance
+                    <span class="material-icons">forum</span>Feedback
                 </a>
             </li>
         </ul>
@@ -67,12 +67,15 @@
 
     <div class="main-content">
         <!-- Conditionally display components based on selected menu item -->
-        <app-facilities *ngIf="selectedContent === 'home'"></app-facilities>
+        <app-usercurrenthistory *ngIf="selectedContent === 'home'"></app-usercurrenthistory>
         <app-userprofile *ngIf="selectedContent === 'account'"></app-userprofile>
         <app-chatbot *ngIf="selectedContent === 'help'"></app-chatbot>
         <app-greivance *ngIf="selectedContent === 'feedback'"></app-greivance>
+        <app-dropdown *ngIf="selectedContent ==='add-room'"></app-dropdown>
+        <app-userpasthistory *ngIf="selectedContent === 'history'"></app-userpasthistory>
+
+        <p>&#64;powered by RNTBCI</p>
         <!-- Add more components like Add Room, Help, Feedback, etc. -->
     </div>
 </div>
 
-<div class="bottom-layout"></div>

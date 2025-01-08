@@ -57,13 +57,25 @@
     
   }
   
+  .main-content p {
+    text-align: center;  /* Centers the text horizontally */
+    margin-top: auto;  /* Pushes the text to the bottom */
+    margin-bottom: -25px;  /* Adjust this value to move the text further down */
+    font-size:large;
+  }
+  
+  
+  
+  
   .main-content
   {
-    background-color: aqua;
+  
+    display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    /* background-color: rgb(172, 210, 210); */
     width: 100%;
     margin-left: 3px;
-    overflow-y: auto; /* Add scroll if content overflows */ 
-    box-sizing: border-box;/* Ensure padding is included in the total width and height */
   }
   
   .nav-list a {

@@ -30,7 +30,7 @@ export class AddroomComponent  {
     this.roomService.addRoom(this.room).subscribe(
       (response: any) => {
         if (response.message === 'Yes') {
-          this.message = 'Room added successfully.';
+          alert("Room added successfully");
           console.log("room added"); 
         } else {
           this.message = 'Error: ' + response.message;

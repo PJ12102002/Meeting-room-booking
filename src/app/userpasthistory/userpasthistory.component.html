@@ -1,0 +1,43 @@
+<h2 class="center-text">Past History</h2>
+ 
+ 
+<br>
+<br>
+<table>
+  <thead>
+    <tr>
+      <th>Book ID</th>
+      <th>Room Name</th>
+      <th> zid </th>
+      <th>Start Date</th>
+      <th>From Time</th>
+      <th>End Date</th>
+      <th>To Time</th>
+      <th>Status</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngIf="pastHistory.length === 0">
+      <td colspan="8">No past history available</td>
+    </tr>
+    <tr *ngFor="let item of pastHistory | paginate: { itemsPerPage: 10, currentPage: currentPage}">
+      <td>{{item.bookId}}</td>
+      <td>{{item.meetRoom.roomName}}</td>
+      <td> {{item.zid}} </td>
+      <td>{{item.startDate}}</td>
+      <td>{{item.fromTime}}</td>
+      <td>{{item.endDate}}</td>
+      <td>{{item.toTime}}</td>
+      <td>{{item.status}}</td>
+    </tr>
+  </tbody>
+</table>
+ 
+<p *ngIf="errorMessage">{{ errorMessage }}</p>
+ 
+<br>
+<br>
+<br>
+ 
+<pagination-controls (pageChange)="currentPage = $event"></pagination-controls>
+ 

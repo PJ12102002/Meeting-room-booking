@@ -1,3 +1,20 @@
+.container {
+  max-width: 85vw;
+  height: 75vh;
+  margin: 6px auto;
+  border-radius: 1px;
+  padding: 30px;
+  border: 1px solid #ccc;
+  display: flex;
+  flex-direction: column;
+  align-items: center; /* Center all items horizontally */
+  justify-content: center; /* Center all items vertically */
+  background-color: #f8f6f6;
+  font-family: Arial, sans-serif;
+}
+
+
+
 /* General styling for the container */
 html, body {
     height: 100%;
@@ -69,6 +86,22 @@ html, body {
     cursor: not-allowed;
     color: #6c757d;
   }
+
+
+  .dropdowns {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    font-family: Arial, sans-serif;
+    padding: 20px;
+    background-color: #ece7e7;
+    border-radius: 6px;
+    box-shadow: 0 3px 5px rgba(0, 0, 0, 0.1);
+   
+    width: 40vw;
+    box-sizing: border-box;
+    margin: 0 auto;
+  }
    
   /* Dropdown styling */
   select {
@@ -81,18 +114,18 @@ html, body {
     margin-bottom: 10px;
   }
    
-  /* Button styling */
-  button {
+  .button {
     padding: 10px;
     font-size: 16px;
     cursor: pointer;
-    margin: 5px 0;
+    margin: 5px 98px;
+    
     background-color: #007bff;
     color: white;
     border: none;
     border-radius: 4px;
     transition: background-color 0.3s ease;
-    width: 100%;  /* Makes buttons span the full width of the form */
+    width: 30vw;  /* Makes buttons span the full width of the form */
     box-sizing: border-box; /* Includes padding and border in the button's total width */
   }
    

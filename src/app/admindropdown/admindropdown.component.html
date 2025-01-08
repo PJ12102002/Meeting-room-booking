@@ -1,0 +1,62 @@
+<div class="container">
+    <h1>Meeting Room Booking</h1>
+   
+    <!-- Phase and Floor Dropdowns -->
+    <div class="dropdowns" >
+      <label for="phase">Select Phase:</label>
+    <select id="phase" (change)="onPhaseChange($event)">
+      <option value="">--Select Phase--</option>
+      <option *ngFor="let phase of phases" [value]="phase.id">{{ phase.name }}</option>
+    </select>
+   
+    <!-- Floor Dropdown (dependent on selected Phase) -->
+    <label for="floor">Select Floor:</label>
+    <select id="floor" (change)="onFloorChange($event)" [disabled]="!selectedPhase">
+      <option value="">--Select Floor--</option>
+      <option *ngFor="let floor of floors" [value]="floor.id">{{ floor.name }}</option>
+    </select>
+    <button (click)="fetchAvailableRooms()">Next</button>
+    <!-- app.component.html -->
+   
+    <!-- <button [routerLink]="['/booking']" [state]="{ meetingRooms: meetingRooms }">
+      Available Rooms
+    </button> -->
+  </div>
+   
+   
+    <!-- Button to fetch available rooms -->
+   
+   
+    <!-- Message Display -->
+    <div *ngIf="message">
+      <p>{{ message }}</p>
+    </div>
+   
+    <!-- Available Rooms Table -->
+    <!-- <div *ngIf="meetingRooms.length > 0">
+      <h3>Available Meeting Rooms:</h3>
+      <table class="table">
+        <thead>
+          <tr>
+            <th>Room No</th>
+            <th>Room Name</th>
+            <th>Capacity</th>
+           
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let room of meetingRooms">
+            <td>{{ room.roomNo }}</td>
+            <td>{{ room.roomName }}</td>
+            <td>{{ room.roomCapacity }}</td>
+           
+          </tr>
+        </tbody>
+      </table>
+    </div> -->
+    <!-- <router-outlet></router-outlet> -->
+  </div>
+   
+  <!-- <app-booking [Rooms]="meetingRooms" ></app-booking> -->
+   
+   

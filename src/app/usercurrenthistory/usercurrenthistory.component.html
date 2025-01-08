@@ -1,0 +1,54 @@
+
+ 
+<h2 class="center-text">  Current History </h2>
+ 
+<br>
+<br>
+<table>
+  <thead>
+    <tr>
+      <th>Booking</th>
+      <th>Room Name</th>
+      <th> zid </th>
+      <th>Start Date</th>
+      <th>From Time</th>
+      <th>End Date</th>
+      <th>To Time</th>
+      <th>Status</th>
+      <th> Action</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngIf="currentHistory.length === 0">
+      <td colspan="8">No current history available</td>
+    </tr>
+    <tr *ngFor="let item of currentHistory | paginate: { itemsPerPage: 10, currentPage: currentPage}; ">
+      <td>{{item.bookId}}</td>
+      <td>{{item.meetRoom.roomNo}}</td>
+      <td>{{item.zid}}</td>
+      <td>{{item.startDate}}</td>
+      <td>{{item.fromTime}}</td>
+      <td>{{item.endDate}}</td>
+      <td>{{item.toTime}}</td>
+      <td>{{item.status}}</td>
+      <td>
+        <button (click)="cancelBooking(item.bookId)">Cancel</button>
+      </td>
+    </tr>
+  </tbody>
+</table>
+ 
+<p *ngIf="errorMessage">{{ errorMessage }}</p>
+ 
+ 
+<br>
+<br>
+<br>
+<br>
+<br>
+ 
+<pagination-controls (pageChange)="currentPage = $event"></pagination-controls>
+ 
+ 
+ 
+ 

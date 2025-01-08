@@ -17,14 +17,14 @@
     </div>
    
     <!-- Button to fetch available rooms -->
-    <button (click)="fetchAvailableRooms()">Available Rooms</button>
+    <button class="button" (click)="fetchAvailableRooms()">Available Rooms</button>
     <div *ngIf="meetingRooms.length >0">
       <label for="room">Select Room:</label>
       <select id="room"  [(ngModel)]="room">
         <option value="">--Select Room--</option>
         <option *ngFor="let meetRoom of meetingRooms" [value]="meetRoom.roomNo">{{ meetRoom.roomNo }}</option>
       </select>
-      <button (click)="removeRoom()">Remove</button>
+      <button class="button" (click)="removeRoom()">Remove</button>
   </div>
   <div *ngIf="mes">
     <p>{{ mes }}</p>

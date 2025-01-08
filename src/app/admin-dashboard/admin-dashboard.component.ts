@@ -9,11 +9,15 @@ import { CommonModule, isPlatformBrowser } from '@angular/common';
 import { UserprofileComponent } from '../userprofile/userprofile.component';
 import { ChatbotComponent } from '../chatbot/chatbot.component';
 
+import { AdminprofileComponent } from '../adminprofile/adminprofile.component';
+import { PasthistoryComponent } from '../pasthistory/pasthistory.component';
+import { AdmincurrenthistoryComponent } from '../admincurrenthistory/admincurrenthistory.component';
+import { AdmindropdownComponent } from '../admindropdown/admindropdown.component';
 
 @Component({
   selector: 'app-admin-dashboard',
   standalone: true,
-  imports: [RouterOutlet,FormsModule, MatDividerModule, ChatbotComponent, CommonModule, UserprofileComponent,ComplaintComponent, AddroomComponent, RemoveroomComponent],
+  imports: [RouterOutlet,FormsModule, MatDividerModule, AdmindropdownComponent,AdmincurrenthistoryComponent, AdminprofileComponent, PasthistoryComponent, ChatbotComponent, CommonModule, UserprofileComponent,ComplaintComponent, AddroomComponent, RemoveroomComponent],
   templateUrl: './admin-dashboard.component.html',
   styleUrl: './admin-dashboard.component.css',
   schemas: [CUSTOM_ELEMENTS_SCHEMA]

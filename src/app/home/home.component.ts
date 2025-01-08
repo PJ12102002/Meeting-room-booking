@@ -1,17 +1,15 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
-
 
 @Component({
   selector: 'app-home',
   standalone: true,
   imports: [CommonModule],
   templateUrl: './home.component.html',
-  styleUrl: './home.component.css'
+  styleUrls: ['./home.component.css']
 })
 export class HomeComponent {
-
   images = [
     './images/meeting-room1.png',
     './images/meeting-room2.png',
@@ -19,8 +17,11 @@ export class HomeComponent {
   ];
 
   currentIndex = 0;
+  showLoginDialog = false;
+  loginType = '';
+  showShareDialog = false;
 
-  
+  constructor(private router: Router) {}
 
   scrollRight(): void { 
     if (this.currentIndex < this.images.length - 1) { 
@@ -42,34 +43,31 @@ export class HomeComponent {
     slider.style.transform = `translateX(-${this.currentIndex * imageWidth}px)`; 
   }
 
-  showLoginDialog: boolean = false;
-  loginType: string = ''; // To determine whether it's an employee or admin login
-
-  constructor(private router: Router) {}
-  
-
-  // Show the login dialog
   openLoginDialog() {
     this.showLoginDialog = true;
   }
 
-  // Close the login dialog
   closeLoginDialog() {
     this.showLoginDialog = false;
   }
 
-  // Navigate to Employee Login
   loginAsEmployee() {
     this.loginType = 'employee';
     this.router.navigate(['/login']);
     this.closeLoginDialog();
   }
 
-  // Navigate to Admin Login
   loginAsAdmin() {
     this.loginType = 'admin';
     this.router.navigate(['/admin-login']);
     this.closeLoginDialog();
   }
 
+  openShareDialog() {
+    this.showShareDialog = true;
+  }
+
+  closeShareDialog() {
+    this.showShareDialog = false;
+  }
 }

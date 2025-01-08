@@ -1,8 +1,11 @@
 <div class="top-layout">
     <img src="./images/Prem.png" alt="No image">
-    <div *ngIf="fullName" class="welcome-message">
-        <p>Welcome, {{ fullName }}</p>
-      </div>
+    <p class="fullname">
+        <span class="material-icons person-icon">person</span>
+    
+        {{ fullName }}
+        </p>
+      
     
     
 </div>
@@ -42,9 +45,9 @@
             </li>
             <li>
                 <a 
-                    (click)="showContent('cancel-room')" 
-                    [ngClass]="{'active-link': selectedContent === 'cancel-room'}">
-                    <span class="material-icons">cancel</span> Cancel Room
+                    (click)="showContent('history')" 
+                    [ngClass]="{'active-link': selectedContent === 'history'}">
+                    <span class="material-icons">history</span> History
                 </a>
             </li>
         </ul>
@@ -87,8 +90,14 @@
         <app-complaint *ngIf="selectedContent == 'feedback'"></app-complaint>
         <app-removeroom *ngIf="selectedContent === 'remove-room'"></app-removeroom>
         <app-chatbot *ngIf="selectedContent === 'help'"></app-chatbot>
+        <app-admindropdown *ngIf="selectedContent === 'book-room'"></app-admindropdown>
+        <app-adminprofile *ngIf="selectedContent === 'account'"></app-adminprofile>
+        <app-pasthistory *ngIf="selectedContent === 'history'"></app-pasthistory>
+        <app-admincurrenthistory *ngIf="selectedContent === 'home'"></app-admincurrenthistory>
+
+        <p>&#64;powered by RNTBCI</p>
       
     </div>
 </div>
 
-<div class="bottom-layout"></div>
+

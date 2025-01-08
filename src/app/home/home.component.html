@@ -62,14 +62,32 @@
   <div class="right-section">
     <h3>Contact Us</h3>
     <p>Phone: +1 234 567 890</p>
-    <p>Email: contactgmail.com</p>
-    <p>Location: 123 Meeting St, City</p>
+    <p>Email: rntbci&#64;gmail.com</p>
+    <p>Location: Ascendas IT Park, Mahindra World City SEZ Plot NoTP2/1, Natham Sub Post Office Ground Floor, Chengalpattu, Tamil Nadu 603002</p>
     <div class="social-icons">
-      <a href="#"><img src="./images/facebook.png" alt="Facebook"></a>
-      <a href="#"><img src="./images/google.png" alt="Google"></a>
-      <a href="#"><img src="./images/linkedin.png" alt="LinkedIn"></a>
-      <a href="#"><img src="./images/share.png" alt="Share"></a>
+      <a href="https://www.bing.com/ck/a?!&&p=a1e1c7606c6fc00832f69974b8e2df0d69fe0933ef08e80fbb07302599a03f59JmltdHM9MTczNjIwODAwMA&ptn=3&ver=2&hsh=4&fclid=13c04389-ded7-6e1e-3791-576bdf7a6fe4&psq=rntbci+facebook&u=a1aHR0cHM6Ly93d3cuZmFjZWJvb2suY29tL1JOVEJDSS9hYm91dC8&ntb=1" target="_blank"><img src="./images/facebook.png" alt="Facebook"></a>
+      <a href="https://rntbci.in/" target="_blank"><img src="./images/google.png" alt="Google"></a>
+      <a href="https://www.bing.com/ck/a?!&&p=f4b1652af241fd05bc2391874ac43c98eeb2da573d443331a0e6b3ea63288292JmltdHM9MTczNjIwODAwMA&ptn=3&ver=2&hsh=4&fclid=13c04389-ded7-6e1e-3791-576bdf7a6fe4&psq=rntbci+linkedin&u=a1aHR0cHM6Ly9pbi5saW5rZWRpbi5jb20vY29tcGFueS9ybnRiY2ktY2hlbm5haQ&ntb=1" target="_blank"><img src="./images/linkedin.png" alt="LinkedIn"></a>
+      <a href="#"><img src="./images/share.png" alt="Share" (click)="openShareDialog()"></a>
     </div>
+    
+    <!-- Modal for Share Options -->
+    <div *ngIf="showShareDialog" class="modal-overlay" (click)="closeShareDialog()">
+      <div class="modal" (click)="$event.stopPropagation()">
+        <h3>Share Options</h3>
+        <div class="icon">
+          <a href="https://api.whatsapp.com/send?text=Check%20this%20out!" target="_blank"><img src="./images/whatsapp.png" alt="WhatsApp" class="share-icon"></a>
+           <a href="https://www.instagram.com" target="_blank"><img src="./images/instagram.png" alt="Instagram" class="share-icon"></a>
+            <a href="mailto:?subject=Check%20this%20out!&body=Have%20a%20look%20at%20this%20link." target="_blank"><img src="./images/email.png" alt="Email" class="share-icon"></a>
+        </div>
+        <button (click)="closeShareDialog()">Close</button>
+      </div>
+    </div>
+    
+    
+    
+    
+    
   </div>
 
 </div>

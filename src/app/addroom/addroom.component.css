@@ -1,31 +1,47 @@
 .container {
-    max-width: 500px;
-    margin: 0 auto;
+    max-width: 80vw;
+    margin: 6px auto;
     padding: 30px;
     border: 1px solid #ccc;
-    border-radius: 8px;
-    background-color: #f9f9f9;
+    display: flex;
+    flex-direction: column;
+    align-items: center; /* Center all items horizontally */
+    justify-content: center; /* Center all items vertically */
+    background-color: #f8f6f6;
     font-family: Arial, sans-serif;
+    height: 69vh;
+    
   }
   .division {
     display: flex;
     flex-direction: column;
     gap: 15px;
     font-family: Arial, sans-serif;
-    padding: 20px;
-    background-color: #f9f9f9;
-    border-radius: 8px;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-    max-width: 500px;
-    width: 100%;
+    padding: 5px;
+    background-color: #ece7e7;
+    border-radius: 6px;
+    box-shadow: 0 3px 5px rgba(0, 0, 0, 0.1);
+   
+    width: 40vw;
     box-sizing: border-box;
     margin: 0 auto;
+    margin-top: -15px;
+  
   }
   h1 {
     text-align: center;
     color: #333;
+   
+  
     margin-bottom: 20px;
     font-size: 24px;
+  }
+
+  .meeting
+  {
+    font-size: xx-large;
+    font-weight: bolder;
+    margin-top: 5px;
   }
   form {
     display: flex;
@@ -55,17 +71,18 @@
     margin-bottom: 5px;
   }
    
-  button {
+  .button {
     padding: 10px;
     font-size: 16px;
     cursor: pointer;
-    margin: 5px 0;
+    margin: 5px 98px;
+    
     background-color: #007bff;
     color: white;
     border: none;
     border-radius: 4px;
     transition: background-color 0.3s ease;
-    width: 100%;  /* Makes buttons span the full width of the form */
+    width: 30vw;  /* Makes buttons span the full width of the form */
     box-sizing: border-box; /* Includes padding and border in the button's total width */
   }
    

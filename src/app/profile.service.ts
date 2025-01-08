@@ -1,9 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
-
-
-
+ 
 export interface Employee {
   zid: string;
   designation: string;
@@ -14,36 +12,24 @@ export interface Employee {
   path: string;
   role: string;
 }
-
-
-
+ 
 @Injectable({
   providedIn: 'root'
 })
 export class ProfileService {
-
-  private apiUrl = 'http://localhost:8080/user/profile';  // Backend API endpoint for getting profile
-  private fileUploadUrl = 'http://localhost:8080/upload'; // Backend API endpoint for file upload
-
-  constructor(private http: HttpClient) { }
-
-  // Method to fetch the profile data
+ 
+  private baseUrl = 'http://localhost:8080';  // Backend API endpoint for getting profile
+  constructor(private http: HttpClient) {}
+ 
   getProfile(): Observable<Employee> {
-    return this.http.get<Employee>(this.apiUrl);
+    return this.http.get<Employee>(`${this.baseUrl}/user/profile`);
   }
-
-  // Method to update the profile data
+ 
   updateProfile(employee: Employee): Observable<any> {
-    // POST request to update the profile with the new data
-    return this.http.post<any>(this.apiUrl, employee);
+    return this.http.post(`${this.baseUrl}/user/profile`, employee);
   }
-
-  // Method to upload the file 
-  uploadFile(file: File | null): Observable<any> { 
-    const formData = new FormData(); 
-    if (file) { 
-      formData.append('file', file); 
-    } 
-    return this.http.post<any>(this.fileUploadUrl, formData); 
-  }
+ 
+ 
 }
+ 
+ 

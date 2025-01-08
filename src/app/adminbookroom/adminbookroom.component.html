@@ -1,0 +1,66 @@
+<div>
+    <h2>Check Room Availability</h2>
+   
+    <form (ngSubmit)="checkAvailability()">
+      <label for="startDate">Start Date:</label>
+      <input type="date" id="startDate" [(ngModel)]="requestedStartDate" name="startDate" required [min]="todayDate" (change)="onStartDateChange()">
+   
+      <label for="startTime">Start Time:</label>
+      <input type="time" id="startTime" [(ngModel)]="requestedStartTime" name="startTime" required [min]="currentTime" (change)="onStartTimeChange()">
+   
+      <label for="endDate">End Date:</label>
+      <input type="date" id="endDate" [(ngModel)]="requestedEndDate" name="endDate" required [min]="requestedStartDate" (change)="onEndDateChange()">
+   
+      <label for="endTime">End Time:</label>
+      <input type="time" id="endTime" [(ngModel)]="requestedEndTime" name="endTime" required [min]="requestedStartTime" (change)="onEndTimeChange()">
+   
+     
+      <button type="submit">Check Availability</button>
+    </form>
+   
+    <!-- <div *ngIf="availableRooms.length > 0">
+      <h3>Available Rooms</h3>
+      <ul>
+        <li *ngFor="let room of availableRooms">
+          Room No: {{ room.roomNo }} - Status: {{ room.status }}
+          <button (click)="bookRoom(room.roomNo)">Book Room</button>
+        </li>
+      </ul>
+    </div> -->
+   
+    <div *ngIf="availableRooms.length === 0">
+      <p>No rooms available for the selected time range.</p>
+    </div>
+   
+    <div *ngIf="availableRooms.length > 0">
+      <h3>Available Meeting Rooms:</h3>
+      <table class="table">
+        <thead>
+          <tr>
+            <th>Room No</th>
+            <th>Room Name</th>
+            <th>Capacity</th>
+            <th>Availability</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let room of availableRooms">
+            <td>{{ room.roomNo }}</td>
+            <td>{{ room.roomName }}</td>
+            <td>{{ room.roomCapacity }}</td>
+            <td>{{ room.status }}</td>
+            <td> <button
+              (click)="bookRoom(room.roomNo)"
+              [disabled]="room.status === 'Not Available'">Book Room</button></td>
+          </tr>
+        </tbody>
+      </table>
+      <!-- <div class="pagination">
+        <button (click)="previousPage()" [disabled]="currentPage === 1">Previous</button>
+        <span>Page {{ currentPage }} of {{ totalRooms / itemsPerPage  }}</span>
+        <button (click)="nextPage()" [disabled]="currentPage * itemsPerPage >= totalRooms">Next</button>
+      </div> -->
+    </div>
+  </div>
+   
+   

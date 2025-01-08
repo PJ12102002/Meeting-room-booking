@@ -7,6 +7,9 @@ import { AdminLoginComponent } from './admin-login/admin-login.component';
 import { AdminDashboardComponent } from './admin-dashboard/admin-dashboard.component';
 import { SignupComponent } from './signup/signup.component';
 import { MainborderComponent } from './mainborder/mainborder.component';
+import { BookroomComponent } from './bookroom/bookroom.component';
+import { DropdownComponent } from './dropdown/dropdown.component';
+import { AdminbookroomComponent } from './adminbookroom/adminbookroom.component';
 
 
 
@@ -19,6 +22,9 @@ export const routes: Routes = [
   { path: 'admin-dashboard', component: AdminDashboardComponent },
   { path: 'signup', component: SignupComponent }, 
   {path: 'emp-dashboard', component: MainborderComponent},
+  { path: 'dropdown', component: DropdownComponent },
+  { path: 'bookingg', component: BookroomComponent },
+  {path : 'adminbookingg', component: AdminbookroomComponent},
 
 
 ];

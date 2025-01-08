@@ -1,5 +1,5 @@
 <div class="container">
-    <h1>Add New Meeting Room</h1>
+    <h1 class="meeting">Add New Meeting Room</h1>
    
     <form (ngSubmit)="addRoom()">
       <div class="division">
@@ -28,7 +28,7 @@
           <input id="floorNo" type="number" [(ngModel)]="room.floorNo" name="floorNo" required>
         </div>
       </div>
-      <button type="submit">Add Room</button>
+      <button class="button" type="submit">Add Room</button>
     </form>
     <div *ngIf="message">
       <p>{{ message }}</p>
