@@ -11,17 +11,10 @@ public class Admin {
     private String fullName;
     private String password;
     private String email;
-    private String path;
+
     public Admin() {
     }
 
-    public String getPath() {
-        return path;
-    }
-
-    public void setPath(String path) {
-        this.path = path;
-    }
 
     public String getZid() {
         return zid;

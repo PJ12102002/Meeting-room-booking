@@ -14,18 +14,12 @@ public class Employee {
     private String role;
     private String designation;
     private String part;
-    private String path;
+
 
     public Employee() {
     }
 
-    public String getPath() {
-        return path;
-    }
 
-    public void setPath(String path) {
-        this.path = path;
-    }
 
     public String getZid() {
         return zid;

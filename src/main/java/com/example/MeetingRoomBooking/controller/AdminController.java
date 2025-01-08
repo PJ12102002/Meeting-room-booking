@@ -1,16 +1,15 @@
 package com.example.MeetingRoomBooking.controller;
 
-import com.example.MeetingRoomBooking.model.Admin;
-import com.example.MeetingRoomBooking.model.Booking;
-import com.example.MeetingRoomBooking.model.Complaint;
-import com.example.MeetingRoomBooking.model.MeetingRoom;
+import com.example.MeetingRoomBooking.model.*;
 import com.example.MeetingRoomBooking.service.AdminService;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
@@ -34,28 +33,33 @@ public class AdminController {
         }
         return ResponseEntity.ok().body(admin);
     }
-
-
-
-    @GetMapping("/currentHistory")
-    public ResponseEntity<?> currentHistory(){
-        List<Booking> bookings=adminService.currentHistory();
-        if(bookings.isEmpty())
-            return  ResponseEntity.ok().body("NO Booking List Available");
-        else
-            return ResponseEntity.ok().body(bookings);
+    @GetMapping("/profile")
+    public ResponseEntity<?> getProfile() {
+        String zid = (String) httpSession.getAttribute("zid");
+        Admin admin = adminService.findPassword(zid);
+        if (admin == null) {
+            return ResponseEntity.ok().body(new HashMap<String, String>() {{
+                put("message", "No profile found");
+            }});
+        }
+        return ResponseEntity.ok().body(admin);
     }
     @PostMapping("/profile")
     public ResponseEntity<?> profileUpdate(@RequestBody Admin admin) {
         String zid = (String) httpSession.getAttribute("zid");
         admin.setZid(zid);
-        Admin adm=adminService.profileUpdate(admin,zid);
-        if(adm==null){
-            return ResponseEntity.ok().body("Unable to update");
+        Admin adm = adminService.profileUpdate(admin, zid);
+        if (adm == null) {
+            return ResponseEntity.ok().body(new HashMap<String, String>() {{
+                put("message", "Unable to update");
+            }});
+        } else {
+            return ResponseEntity.ok().body(new HashMap<String, String>() {{
+                put("message", "Updated Successfully");
+            }});
         }
-        else
-            return ResponseEntity.ok().body("Updated successfully");
     }
+
     @PostMapping("/addRoom")
     public ResponseEntity<?> addRoom(@RequestBody MeetingRoom meetroom){
         MeetingRoom meetingRoom=adminService.searchRoom(meetroom.getRoomNo());
@@ -85,7 +89,6 @@ public class AdminController {
     @GetMapping("/location")
     public ResponseEntity<?> locationfetch(@RequestParam Integer phase,@RequestParam Integer floor){
         List<MeetingRoom> meetingRooms=adminService.roomFetch(phase,floor);
-       // httpSession.setAttribute("meetingrooms",meetingRooms);
         if(meetingRooms.isEmpty()) {
             return ResponseEntity.ok().body(new HashMap<String, String>() {{
                 put("message", "No Access");
@@ -95,15 +98,14 @@ public class AdminController {
     }
 
     @PostMapping("/availability")
-    public ResponseEntity<?> availRoom(
+    public ResponseEntity<?> availRoom(@RequestBody List<MeetingRoom> meetingRoom,
                                    @RequestParam LocalDate requestedStartDate,
                                    @RequestParam LocalTime requestedStartTime,
                                    @RequestParam LocalTime requestedEndTime,
                                    @RequestParam LocalDate requestedEndDate){
-        List<MeetingRoom> meetingRoomList= (List<MeetingRoom>) httpSession.getAttribute("meetingrooms");
-        List<MeetingRoom> meetingRooms=adminService.availableRoom(meetingRoomList,requestedStartDate,
+        List<MeetingRoom> meetingRooms=adminService.availableRoom(meetingRoom,requestedStartDate,
             requestedStartTime,requestedEndDate,requestedEndTime);
-        httpSession.setAttribute("startdate",requestedStartTime);
+        httpSession.setAttribute("startdate",requestedStartDate);
         httpSession.setAttribute("enddate",requestedEndDate);
         httpSession.setAttribute("fromtime",requestedStartTime);
         httpSession.setAttribute("totime",requestedEndTime);
@@ -148,14 +150,109 @@ public class AdminController {
         else
             return ResponseEntity.ok().body(complaints);
     }
-    @GetMapping("/bookHistory")
-    public ResponseEntity<?> bookHistory(){
-        String zid=(String) httpSession.getAttribute("zid");
-        List<Booking> bookings=adminService.bookHistory();
-        if(bookings.isEmpty()){
-            return ResponseEntity.ok().body("No history");
+    @GetMapping("/currentHistory")
+    public ResponseEntity<?> currentHistory(){
+        List<Booking> bookings=adminService.allCurrentHistory();
+        if(bookings.isEmpty())
+        {
+            return ResponseEntity.ok().body(new ArrayList<Booking>());
+//            return ResponseEntity.ok().body(new HashMap<String, String>() {{
+
+//                put("message", "No");
+
+//            }});
         }
-        return ResponseEntity.ok().body(bookings);
+        else
+            return ResponseEntity.ok().body(bookings);
     }
+    @GetMapping("/adminCurrentHistory")
+    public ResponseEntity<?> adminCurrentHistory(){
+        String zid=(String) httpSession.getAttribute("zid");
+        List<Booking> bookings=adminService.adminCurrentHistory(zid);
+        if(bookings.isEmpty())
+        {
+
+            return ResponseEntity.ok().body(new ArrayList<Booking>());
+
+//            return ResponseEntity.ok().body(new HashMap<String, String>() {{
+
+//                put("message", "No");
+
+//            }});
+
+        }
+
+        else
+
+            return ResponseEntity.ok().body(bookings);
+
+    }
+
+    @GetMapping("/bookHistory")
+
+    public ResponseEntity<?> bookHistory(){
+
+        List<Booking> bookings=adminService.allBookHistory();
+        if(bookings==null){
+            return ResponseEntity.ok().body(new ArrayList<Booking>());
+
+//            return ResponseEntity.ok().body(new HashMap<String, String>() {{
+
+//                put("message", "No");
+
+//            }});
+
+        }
+
+        return ResponseEntity.ok().body(bookings);
+
+    }
+
+    @GetMapping("/adminBookHistory")
+
+    public ResponseEntity<?> adminBookHistory(){
+
+        String zid=(String) httpSession.getAttribute("zid");
+
+        List<Booking> bookings=adminService.adminBookHistory(zid);
+
+        if(bookings==null){
+
+            return ResponseEntity.ok().body(new ArrayList<Booking>());
+
+        }
+
+        return ResponseEntity.ok().body(bookings);
+
+    }
+
+    @GetMapping("/cancelRoom/{bookId}")
+
+    public  ResponseEntity<?> cancelRoom(@PathVariable Long bookId){
+
+        System.out.println(bookId);
+
+        Booking booking1=adminService.cancelRoom(bookId);
+
+        if(booking1==null){
+
+            return ResponseEntity.ok().body(new HashMap<String, String>() {{
+
+                put("message", "Unable to cancel");
+
+            }});
+
+        }
+
+        System.out.println("haiiiii");
+
+        return ResponseEntity.ok().body(new HashMap<String, String>() {{
+
+            put("message", "Cancelled successfully");
+
+        }});
+
+    }
+
 
 }

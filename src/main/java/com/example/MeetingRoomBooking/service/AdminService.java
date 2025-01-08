@@ -34,26 +34,13 @@ public class AdminService {
     String localtime=t.format(timeFormatter);
     LocalTime parsedTime=LocalTime.parse(localtime,timeFormatter);
     public Admin findPassword(String zid){
-        Optional<Admin> admin=adminRepository.findById(zid);
-        return admin.get();
+        return adminRepository.findById(zid).orElse(null);
     }
-    public List<Booking> currentHistory(){
-        List<Booking> currentHistory = new ArrayList<>();
-        List<Booking> bookings=bookingRepository.findBookingsWhereTodayIsBetweenStartAndEnd(parsedDate);
-        for(Booking booking:bookings){
-            if(parsedTime.isBefore(booking.getFromTime())){
-                currentHistory.add(booking);
-            }
-        }
-        return currentHistory;
-    }
+
     public Admin profileUpdate(Admin admin,String zid){
         Optional<Admin> adm=adminRepository.findById(zid);
 
         if(adm.isPresent()){
-            if((admin.getPath()!=null)&& (!admin.getPath().equals(""))) {
-                adm.get().setPath(admin.getPath());
-            }
             if((admin.getFullName() != null) && !admin.getFullName().equals("")){
             adm.get().setFullName(admin.getFullName());
             }
@@ -81,10 +68,10 @@ public class AdminService {
         List<MeetingRoom> meetingRooms = meetingRoomRepository.findByPhaseNoAndFloorNo(phase, floor);
         return meetingRooms;
     }
-    public List<MeetingRoom> availableRoom( List<MeetingRoom> meetingRooms, LocalDate requestedStartDate,
+    public List<MeetingRoom> availableRoom(List<MeetingRoom> meetingRooms, LocalDate requestedStartDate,
                                            LocalTime requestedStartTime,
                                            LocalDate requestedEndDate, LocalTime requestedEndTime) {
-        int flag=1;
+        int flag = 1;
         LocalDateTime existingStart = LocalDateTime.of(requestedStartDate, requestedStartTime);
         LocalDateTime existingEnd = LocalDateTime.of(requestedEndDate, requestedEndTime);
         List<Booking> bookings = bookingRepository.findBookingsWhereTodayIsBetweenStartAndEnd(requestedStartDate);
@@ -93,7 +80,8 @@ public class AdminService {
         } else {
             for (MeetingRoom meetingRoom : meetingRooms) {
                 for (Booking booking : bookings) {
-                    if (meetingRoom.getRoomNo().equals( booking.getMeetRoom().getRoomNo())) {
+                    if (meetingRoom.getRoomNo().equals(booking.getMeetRoom().getRoomNo())) {
+                        flag = 0;
                         LocalDateTime existingStart1 = LocalDateTime.of(booking.getStartDate(), booking.getFromTime());
                         LocalDateTime existingEnd2 = LocalDateTime.of(booking.getEndDate(), booking.getToTime());
                         if (existingStart1.isAfter(existingStart) && existingStart1.isAfter(existingEnd) && existingEnd2.isAfter(existingStart)
@@ -102,15 +90,18 @@ public class AdminService {
                         } else if (existingStart1.isBefore(existingStart) && existingStart1.isBefore(existingEnd) && existingEnd2.isBefore(existingStart)
                                 && existingEnd2.isBefore(existingEnd) && booking.getStatus().equals("Booked")) {
                             meetingRoom.setStatus("Available");
-                        } else {
+                        } else if( booking.getStatus().equals("Canceled")) {
+                            meetingRoom.setStatus("Available");
+                        }
+                        else{
                             meetingRoom.setStatus("Not Available");
                         }
                     }
                 }
-                if(flag==1){
+                if (flag == 1) {
                     meetingRoom.setStatus("Available");
                 }
-                flag=1;
+                flag = 1;
             }
         }
         return meetingRooms;
@@ -147,4 +138,140 @@ public class AdminService {
         }
         return  bookingHistory;
     }
+
+
+    public Booking cancelRoom(Long book){
+
+        Optional<Booking> booking=bookingRepository.findById(book);
+
+        if(booking.isEmpty()){
+
+            return null;
+
+        }
+
+        else{
+
+            booking.get().setStatus("Canceled");
+
+            return  bookingRepository.save(booking.get());
+
+        }
+
+    }
+
+    public List<Booking> allBookHistory(){
+
+        List<Booking> book=bookingRepository.findBookingsWhereTodayIsGreaterThanEnd(parsedDate);
+
+        List<Booking> bookings=bookingRepository.findBookingsWhereTodayIsGreaterThanEndAndCanceled(parsedDate);
+
+        if(book.isEmpty())
+
+            return null;
+
+        return  bookHistory(book,bookings);
+
+    }
+
+    public List<Booking> adminBookHistory(String zid){
+        List<Booking> book=bookingRepository.findBookingsWhereTodayIsGreaterThanEndAndZid(parsedDate,zid);
+        List<Booking> bookings=bookingRepository.findBookingsWhereTodayIsGreaterThanEndAndCanceledAndsZid(parsedDate,zid);
+
+        if(book.isEmpty())
+
+            return null;
+
+        return  bookHistory(book,bookings);
+
+    }
+
+    public List<Booking> bookHistory(List<Booking> book,List<Booking> bookings){
+
+        List<Booking> bookingHistory = new ArrayList<>();
+
+        for(Booking booking:book){
+
+            if(parsedDate.equals(booking.getEndDate())&&parsedTime.isBefore(booking.getFromTime())&& booking.getStatus().equals("Booked")){
+
+                continue;
+
+            }
+
+            bookingHistory.add(booking);
+
+        }
+
+        bookingHistory.addAll(bookings);
+
+        if(bookingHistory.isEmpty())
+
+            return null;
+
+        return  bookingHistory;
+
+    }
+
+    public List<Booking> allCurrentHistory(){
+
+        List<Booking> bookings=bookingRepository.findBookingsWhereTodayIsBetweenStartAndEndAndBooked(parsedDate);
+
+        List<Booking> bookings1=bookingRepository.findBookingsWhereTodayIsGreaterThanStart(parsedDate);
+
+        return  currentHistory(bookings,bookings1);
+
+    }
+
+    public List<Booking> adminCurrentHistory(String zid){
+
+        List<Booking> bookings=bookingRepository.findBookingsWhereTodayIsBetweenStartAndEndAndZidAndBooked(parsedDate,zid);
+
+        List<Booking> bookings1=bookingRepository.findBookingsWhereTodayIsGreaterThanStartAndZid(parsedDate,zid);
+
+        return  currentHistory(bookings,bookings1);
+
+    }
+
+    public List<Booking> currentHistory(List<Booking>bookings, List<Booking> bookings1){
+
+        List<Booking> currentHistory = new ArrayList<>();
+
+        if(bookings != null && !bookings.isEmpty()) {
+
+            for (Booking booking : bookings) {
+
+                if (parsedDate.equals(booking.getEndDate()) && parsedTime.isAfter(booking.getFromTime())) {
+
+                    continue;
+
+                }
+
+                currentHistory.add(booking);
+
+            }
+
+        }
+
+        if(bookings1 != null && !bookings1.isEmpty()) {
+
+            for (Booking booking : bookings1) {
+
+                if (booking.getStatus().equals("Booked")) {
+
+                    currentHistory.add(booking);
+
+                }
+
+            }
+
+        }
+
+        return currentHistory.isEmpty() ? new ArrayList<>() : currentHistory;
+
+    }
+
+
+
+
+
 }

@@ -7,10 +7,20 @@ import com.example.MeetingRoomBooking.model.MeetingRoom;
 import com.example.MeetingRoomBooking.service.UserService;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.UrlResource;
+import org.springframework.core.io.Resource;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
+import org.springframework.http.MediaType;
+
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.nio.file.Path;
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
@@ -52,32 +62,57 @@ public class UserController {
         return ResponseEntity.ok().build();
     }
 
+//    @GetMapping("/profile")
+//    public ResponseEntity<?> getProfile() {
+//        String zid = (String) httpSession.getAttribute("zid");
+//        Employee employee = userService.getEmployeeProfile(zid);
+//        if (employee == null) {
+//            return ResponseEntity.ok().body(new HashMap<String, String>() {{
+//                put("message", "No profile found");
+//            }});
+//        }
+//        return ResponseEntity.ok().body(employee);
+//    }
+//
+//    @PostMapping("/profile")
+//    public ResponseEntity<?> profileUpdate(@RequestBody  Employee employee){
+//        String zid= (String) httpSession.getAttribute("zid");
+//        employee.setZid(zid);
+//        Employee emp=userService.profile(employee,zid);
+//        if(emp==null){
+//            return ResponseEntity.ok().body(new HashMap<String, String>() {{
+//                put("message", "unable to update");
+//            }});
+//        }
+//        else
+//            return ResponseEntity.ok().body(new HashMap<String, String>() {{
+//                put("message", "Updated Succesfully");
+//            }});
+//    }
+@PostMapping("/profile")
+public ResponseEntity<?> profileUpdate(@RequestBody  Employee employee) {
+    String zid = (String) httpSession.getAttribute("zid");
+    employee.setZid(zid);
+    Employee emp = userService.profile(employee, zid);
+    if (emp == null) {
+        return ResponseEntity.ok().body(new HashMap<String, String>() {{
+            put("message", "Unable to update");
+        }});
+    } else {
+        return ResponseEntity.ok().body(new HashMap<String, String>() {{
+            put("message", "Updated Successfully");
+        }});
+    }
+}
     @GetMapping("/profile")
-    public ResponseEntity<?> getProfile() {
+    public ResponseEntity<Employee> getProfile() {
         String zid = (String) httpSession.getAttribute("zid");
         Employee employee = userService.getEmployeeProfile(zid);
-        if (employee == null) {
-            return ResponseEntity.ok().body(new HashMap<String, String>() {{
-                put("message", "No profile found");
-            }});
+        if (employee != null) {
+            return ResponseEntity.ok(employee);
+        } else {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
         }
-        return ResponseEntity.ok().body(employee);
-    }
-
-    @PostMapping("/profile")
-    public ResponseEntity<?> profileUpdate(@RequestBody  Employee employee){
-        String zid= (String) httpSession.getAttribute("zid");
-        employee.setZid(zid);
-        Employee emp=userService.profile(employee,zid);
-        if(emp==null){
-            return ResponseEntity.ok().body(new HashMap<String, String>() {{
-                put("message", "unable to update");
-            }});
-        }
-        else
-            return ResponseEntity.ok().body(new HashMap<String, String>() {{
-                put("message", "Updated Succesfully");
-            }});
     }
 
     @GetMapping("/location")
@@ -95,19 +130,17 @@ public class UserController {
     }
 
     @PostMapping("/availability")
-    public ResponseEntity<?> availRoom(@RequestParam LocalDate requestedStartDate,
+    public ResponseEntity<?> availRoom(@RequestBody List<MeetingRoom> meetingRoom,@RequestParam LocalDate requestedStartDate,
                                        @RequestParam LocalTime requestedStartTime,
                                        @RequestParam LocalTime requestedEndTime,
                                        @RequestParam LocalDate requestedEndDate){
-    String zid=(String)httpSession.getAttribute("zid");
-    List<MeetingRoom> meetingRoomList= (List<MeetingRoom>) httpSession.getAttribute("meetingrooms");
-    List<MeetingRoom> meetingRooms=userService.availableRoom(meetingRoomList,requestedStartDate,
-            requestedStartTime,requestedEndDate,requestedEndTime);
-    httpSession.setAttribute("startdate",requestedStartTime);
-    httpSession.setAttribute("enddate",requestedEndDate);
-    httpSession.setAttribute("fromtime",requestedStartTime);
-    httpSession.setAttribute("totime",requestedEndTime);
-    return ResponseEntity.ok().body(meetingRooms);
+        List<MeetingRoom> meetingRooms=userService.availableRoom(meetingRoom,requestedStartDate,
+                requestedStartTime,requestedEndDate,requestedEndTime);
+        httpSession.setAttribute("startdate",requestedStartDate);
+        httpSession.setAttribute("enddate",requestedEndDate);
+        httpSession.setAttribute("fromtime",requestedStartTime);
+        httpSession.setAttribute("totime",requestedEndTime);
+        return ResponseEntity.ok().body(meetingRooms);
     }
 
     @PostMapping("/booking")
@@ -142,7 +175,7 @@ public class UserController {
         String zid=(String) httpSession.getAttribute("zid");
         List<Booking> bookings=userService.bookHistory(zid);
         if(bookings.isEmpty()){
-            return ResponseEntity.ok().body("No history");
+            return ResponseEntity.ok().body(new ArrayList<Booking>());
         }
         return ResponseEntity.ok().body(bookings);
     }
@@ -151,10 +184,26 @@ public class UserController {
     String zid=(String) httpSession.getAttribute("zid");
     List<Booking> bookings=userService.currentHistory(zid);
     if(bookings.isEmpty()){
-        return ResponseEntity.ok().body("No Current history");
+        return ResponseEntity.ok().body(new ArrayList<Booking>());
     }
     return ResponseEntity.ok().body(bookings);
     }
+    @GetMapping("/cancelRoom/{bookId}")
+    public  ResponseEntity<?> cancelRoom(@PathVariable Long bookId){
+        System.out.println(bookId);
+        Booking booking1=userService.cancelRoom(bookId);
+        if(booking1==null){
+            return ResponseEntity.ok().body(new HashMap<String, String>() {{
+                put("message", "Unable to cancel");
+            }});
+        }
+        System.out.println("haiiiii");
+        return ResponseEntity.ok().body(new HashMap<String, String>() {{
+            put("message", "Cancelled successfully");
+        }});
+
+    }
+
 
 }
 

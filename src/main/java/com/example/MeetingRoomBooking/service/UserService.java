@@ -10,6 +10,9 @@ import com.example.MeetingRoomBooking.repository.EmployeeRepository;
 import com.example.MeetingRoomBooking.repository.MeetingRoomRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
+
+import java.nio.file.StandardCopyOption;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
@@ -17,6 +20,9 @@ import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 
 @Service
 public class UserService {
@@ -28,11 +34,18 @@ public class UserService {
     private BookingRepository bookingRepository;
     @Autowired
     private ComplaintRepository complaintRepository;
+    DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+    LocalDate l = LocalDate.now();
+    String localDate = l.format(dateFormatter);
+    LocalDate parsedDate = LocalDate.parse(localDate, dateFormatter);
+    DateTimeFormatter timeFormatter = DateTimeFormatter.ofPattern("HH:mm");
+    LocalTime t = LocalTime.now();
+    String localtime = t.format(timeFormatter);
+    LocalTime parsedTime = LocalTime.parse(localtime, timeFormatter);
     public Employee employeeDetails(String ZID) {
         Optional<Employee> employee = employeeRepository.findById(ZID);
         return employee.get();
     }
-
 
 
     public Employee signUser(String zid, String password) {
@@ -45,137 +58,156 @@ public class UserService {
         return employeeRepository.save(e);
     }
 
+    //
     public Employee profile(Employee employee, String zid) {
         Optional<Employee> emp = employeeRepository.findById(zid);
-        if(emp.isPresent()){
-            if((employee.getPath()!=null)&& (!employee.getPath().equals(""))) {
-                emp.get().setPath(employee.getPath());
-            }
-            if((employee.getFullName() != null) && !employee.getFullName().equals("")){
+        if (emp.isPresent()) {
+
+            if ((employee.getFullName() != null) && !employee.getFullName().equals("")) {
                 emp.get().setFullName(employee.getFullName());
             }
-            if ((employee.getDesignation()!=null)&& !(employee.getDesignation().equals(""))) {
+            if ((employee.getDesignation() != null) && !(employee.getDesignation().equals(""))) {
                 emp.get().setDesignation(employee.getDesignation());
             }
-            if((employee.getPart() != null) && !employee.getPart().equals("")){
+            if ((employee.getPart() != null) && !employee.getPart().equals("")) {
                 emp.get().setPart(employee.getPart());
             }
-            if((employee.getRole() != null) && !employee.getRole().equals("")){
+            if ((employee.getRole() != null) && !employee.getRole().equals("")) {
                 emp.get().setRole(employee.getRole());
             }
-            if((emp.get().getEmail()==null))
+            if ((emp.get().getEmail() == null))
                 emp.get().setEmail(employee.getEmail());
             return employeeRepository.save(emp.get());
-        }
-        else return null;
+        } else return null;
     }
 
     public Employee getEmployeeProfile(String zid) {
         return employeeRepository.findById(zid).orElse(null);
     }
 
+    public String saveFile(MultipartFile file) throws Exception {
 
-    public List<MeetingRoom> roomFetch(String zid, Integer phase, Integer floor){
+        String fileName = file.getOriginalFilename();
+        Path uploadPath = Paths.get("uploads/");
+        if (!Files.exists(uploadPath)) {
+            Files.createDirectories(uploadPath);
+        }
+        try {
+            Path filePath = uploadPath.resolve(fileName);
+            Files.copy(file.getInputStream(), filePath, StandardCopyOption.REPLACE_EXISTING);
+            return filePath.toString();
+        } catch (Exception e) {
+            throw new Exception("Could not save file: " + fileName, e);
+        }
+    }
+
+
+    public List<MeetingRoom> roomFetch(String zid, Integer phase, Integer floor) {
         Employee employee = employeeDetails(zid);
         String access = employee.getPart();
         List<MeetingRoom> meetingRooms = meetingRoomRepository.findByPhaseNoAndFloorNoAndAccess(phase, floor, access);
         return meetingRooms;
     }
-    public List<MeetingRoom> availableRoom( List<MeetingRoom> meetingRooms,LocalDate requestedStartDate,
+
+    public List<MeetingRoom> availableRoom(List<MeetingRoom> meetingRooms, LocalDate requestedStartDate,
                                            LocalTime requestedStartTime,
                                            LocalDate requestedEndDate, LocalTime requestedEndTime) {
-        int flag=1;
+        int flag = 1;
         LocalDateTime existingStart = LocalDateTime.of(requestedStartDate, requestedStartTime);
         LocalDateTime existingEnd = LocalDateTime.of(requestedEndDate, requestedEndTime);
         List<Booking> bookings = bookingRepository.findBookingsWhereTodayIsBetweenStartAndEnd(requestedStartDate);
         if (bookings.isEmpty()) {
-            meetingRooms.forEach(mr -> mr.setStatus("Available"));  // Update status for each meeting room
+            meetingRooms.forEach(mr -> mr.setStatus("Available"));
         } else {
             for (MeetingRoom meetingRoom : meetingRooms) {
                 for (Booking booking : bookings) {
-                    if (meetingRoom.getRoomNo().equals( booking.getMeetRoom().getRoomNo())) {
+                    if (meetingRoom.getRoomNo().equals(booking.getMeetRoom().getRoomNo())) {
+                        flag = 0;
                         LocalDateTime existingStart1 = LocalDateTime.of(booking.getStartDate(), booking.getFromTime());
                         LocalDateTime existingEnd2 = LocalDateTime.of(booking.getEndDate(), booking.getToTime());
                         if (existingStart1.isAfter(existingStart) && existingStart1.isAfter(existingEnd) && existingEnd2.isAfter(existingStart)
-                                && existingEnd2.isAfter(existingEnd) && booking.getStatus().equals("Booked") ){
+                                && existingEnd2.isAfter(existingEnd) && booking.getStatus().equals("Booked")) {
                             meetingRoom.setStatus("Available");
                         } else if (existingStart1.isBefore(existingStart) && existingStart1.isBefore(existingEnd) && existingEnd2.isBefore(existingStart)
                                 && existingEnd2.isBefore(existingEnd) && booking.getStatus().equals("Booked")) {
                             meetingRoom.setStatus("Available");
-                        } else {
+                        } else if( booking.getStatus().equals("Canceled")) {
+                            meetingRoom.setStatus("Available");
+                        }
+                        else{
                             meetingRoom.setStatus("Not Available");
                         }
                     }
                 }
-                if(flag==1){
+                if (flag == 1) {
                     meetingRoom.setStatus("Available");
                 }
-                flag=1;
+                flag = 1;
             }
         }
         return meetingRooms;
     }
-    public Booking booking(String zid,String roomNo,Booking booking){
-        Optional<MeetingRoom> meetingRoom=meetingRoomRepository.findById(roomNo);
+    public Booking booking(String zid, String roomNo, Booking booking) {
+        Optional<MeetingRoom> meetingRoom = meetingRoomRepository.findById(roomNo);
         booking.setZid(zid);
         booking.setMeetRoom(meetingRoom.get());
         return bookingRepository.save(booking);
     }
-    public void complaintRegister(Complaint complaint){
+
+    public void complaintRegister(Complaint complaint) {
         complaintRepository.save(complaint);
     }
-    public List<Booking> currentHistory(String zid){
 
+    public List<Booking> bookHistory(String zid){
+        List<Booking> bookingHistory = new ArrayList<>();
+        List<Booking> book=bookingRepository.findBookingsWhereTodayIsGreaterThanEndAndZid(parsedDate,zid);
+        List<Booking> bookings=bookingRepository.findBookingsWhereTodayIsGreaterThanEndAndCanceledAndsZid(parsedDate,zid);
+        for(Booking booking:book){
+            if(parsedDate.equals(booking.getEndDate())&&parsedTime.isBefore(booking.getFromTime()) && booking.getStatus().equals("Booked")){
+                continue;
+            }
+            bookingHistory.add(booking);
+        }
+        bookingHistory.addAll(bookings);
+        return  bookingHistory;
+    }
+    public List<Booking> currentHistory(String zid){
         List<Booking> currentHistory = new ArrayList<>();
-        DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-        LocalDate l=LocalDate.now();
-        String localDate=l.format(dateFormatter);
-        LocalDate parsedDate = LocalDate.parse(localDate, dateFormatter);
-        DateTimeFormatter timeFormatter = DateTimeFormatter.ofPattern("HH:mm");
-        LocalTime t= LocalTime.now();
-        String localtime=t.format(timeFormatter);
-        LocalTime parsedTime=LocalTime.parse(localtime,timeFormatter);
-        List<Booking> bookings=bookingRepository.findBookingsWhereTodayIsBetweenStartAndEndAndZid(parsedDate,zid);
-        for(Booking booking:bookings){
-            if(parsedTime.isBefore(booking.getFromTime())){
+        List<Booking> bookings=bookingRepository.findBookingsWhereTodayIsBetweenStartAndEndAndZidAndBooked(parsedDate,zid);
+        List<Booking> bookings1=bookingRepository.findBookingsWhereTodayIsGreaterThanStartAndZid(parsedDate,zid);
+        if(bookings != null && !bookings.isEmpty()){
+            for(Booking booking:bookings){
+                if(parsedDate.equals(booking.getEndDate())&& parsedTime.isAfter(booking.getFromTime())){
+                    continue;
+                }
                 currentHistory.add(booking);
+            }}
+        if(bookings1 != null && !bookings1.isEmpty()) {
+            for (Booking booking : bookings1) {
+                if (booking.getStatus().equals("Booked")) {
+                    currentHistory.add(booking);
+                }
             }
         }
         return currentHistory;
     }
-//    public Booking expandBooking(Booking book,LocalDate endDate,LocalTime toTime){
-//        LocalDate bookedEndDate=book.getEndDate();
-//        LocalTime bookedEndTime=book.getToTime();
-//        if()
-//
-//    }
 
+    public Booking cancelRoom(Long book) {
+        Optional<Booking> booking = bookingRepository.findById(book);
+        if (booking.isEmpty()) {
+            return null;
 
+        } else {
 
-    public List<Booking> bookHistory(String zid){
-        List<Booking> bookingHistory = new ArrayList<>();
+            booking.get().setStatus("Canceled");
 
-        DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-        LocalDate l=LocalDate.now();
-        String localDate=l.format(dateFormatter);
-        LocalDate parsedDate = LocalDate.parse(localDate, dateFormatter);
-        DateTimeFormatter timeFormatter = DateTimeFormatter.ofPattern("HH:mm");
-        LocalTime t= LocalTime.now();
-        String localtime=t.format(timeFormatter);
-        LocalTime parsedTime=LocalTime.parse(localtime,timeFormatter);
-        List<Booking> book=bookingRepository.findBookingsWhereTodayIsGreaterThanEndAndZid(parsedDate,zid);
-        for(Booking booking:book){
-            if(parsedTime.isAfter(booking.getFromTime())){
-                bookingHistory.add(booking);
-            }
+            return bookingRepository.save(booking.get());
+
         }
-        return  bookingHistory;
-
     }
+
+
 }
-
-
-
 
 
 
